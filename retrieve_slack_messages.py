@@ -4,10 +4,14 @@ import argparse
 import datetime
 import os
 
-section_assignments = {'U8DGW7KGD': 'A', 'U8C7VUKCY': 'B', 'U8DPKGUEB': 'B', 'U8CUHJG2U': 'B', 'U8C1X5TA5': 'B', 'U8CNKQMR6': 'A', 'U8M4ENAQL': 'A', 'U8CEWCK99': 'B', 
-'U8HTULDBJ': 'B', 'U8G9TRVA5': 'A', 'U8DNT78LE': 'A', 'U8CNQK8JG': 'B', 'U8G9MDF3K': 'B', 'U8C67L5UH': 'A', 'U8DUAR1HD': 'A',
- 'U8M0HPK8D': 'A', 'U8FUKRC4V': 'A', 'U8LCMUJLR': 'B', 'U8C5SUKPT': 'B', 'U8CTSRT0R': 'A', 'U8C4H8BCY': 'B', 'U8C9QF4SD': 'B', 
- 'U8C997UM6': 'A', 'U8DT833T8': 'A', 'U8GJ09F5M': 'A', 'U8D3GH5GB': 'B', 'U8KKE6HMF': 'B', 'U8L5VPQ4T': 'B', 'U8FLB5F6G': 'B', 'U8E59ACR2': 'A'}
+section_assignments = {'UF42BG2AZ': 'A', 'UF7J9GDF0': 'A', 'UF1DQSB5X': 'A', 'UF1H5UPQS': 'A',
+ 'UF7F8NZBQ': 'A', 'UF4CHR0C8': 'A', 'UF43ER6VC': 'A', 'UF41X1ECV': 'A',
+ 'UF2V78H7H': 'A', 'UF209NTPC': 'A', 'UF6E8F22J': 'A', 'UF3CMBX46': 'A',
+ 'UF2G6AX08': 'A', 'UF138ES92': 'A', 'UF6FTCAPR': 'A', 'UF19DNZ5E': 'A',
+ 'UF6R87N5A': 'B', 'UF454AYP8': 'B', 'UF6EDFNBF': 'B', 'UF4GQD2BC': 'B',
+ 'UF4U21CTY': 'B', 'UF16E8535': 'B', 'UF3CE2LBC': 'B', 'UF0Q9EE7K': 'B',
+ 'UF1FCTP0A': 'B', 'UF267S3U1': 'B', 'UF1365RQU': 'B', 'UF6B2RSL8': 'B',
+ 'UF7DBQNF6': 'B', 'UF8FVA206': 'B', 'UF6UNDAHY': 'B', 'UF7MR1NEA': 'B'}
 
 def slack_query(query_name, url_data = {}):
 	url = 'https://slack.com/api/'
@@ -65,9 +69,9 @@ def get_all_messages():
 	channels_to_exclude = ['scratchwork']
 	channels = get_channel_list(channels_to_exclude)
 
-	users_to_exclude = ['U865BPL76', 'U87KPT3RV', 'U8NLCNG1M', 'U8P3D8CAZ', 'USLACKBOT', 'U8GD099QD', 'U8G7HSM2L', 'U8CJADZ44', 'U8CPYVA9J']
+	users_to_exclude = ['USLACKBOT', 'UEVMEUTU0', 'UEWCD304A', 'UF7RLN6TS', 'UFA88MRP1']
 	user_list = get_users(users_to_exclude)
-	
+
 	messages = []
 	for channel in channels:
 		print('Retrieving #{0} history...'.format(channel))
