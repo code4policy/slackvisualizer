@@ -5,12 +5,6 @@ import datetime
 import os
 import yaml
 
-with open('slack-config.yaml') as f:
-    config = yaml.safe_load(f)
-
-users_to_exclude = config['users_to_exclude']
-channels_to_exclude = config['channels_to_exclude']
-posts_to_exclude = config['posts_to_exclude']
 
 def slack_query(query_name, url_data = {}):
 	url = 'https://slack.com/api/'
@@ -59,6 +53,7 @@ def get_channel_history(channel_id, channel_name, user_list, posts_to_exclude=[]
 				messages[-1]['post'] = 1
 				messages[-1]['words'] = len(messages[-1]['text'].split(' '))
 				messages[-1]['characters'] = len(messages[-1]['text'])
+				messages[-1]['id'] = user_id
 	else:
 		messages = []
 	return messages
@@ -66,6 +61,9 @@ def get_channel_history(channel_id, channel_name, user_list, posts_to_exclude=[]
 def get_all_messages(channels_to_exclude=[], users_to_exclude=[]):
 	channels = get_channel_list(channels_to_exclude)
 	user_list = get_users(users_to_exclude)
+	print(users_to_exclude)
+	print(user_list)
+
 
 	messages = []
 	for channel in channels:
@@ -77,7 +75,13 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-f', '--file', help = 'output_file')
 
-	data = get_all_messages()
+	with open('slack-config.yaml') as f:
+		config = yaml.safe_load(f)
+
+	users_to_exclude = config['users_to_exclude']
+	channels_to_exclude = config['channels_to_exclude']
+	posts_to_exclude = config['posts_to_exclude']
+	data = get_all_messages(channels_to_exclude, users_to_exclude)
 
 	args = parser.parse_args()
 	if args.file:
