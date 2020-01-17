@@ -1,0 +1,15 @@
+users_to_exclude:
+    - USLACKBOT
+
+channels_to_exclude:
+    - scratchwork
+    - random
+
+posts_to_exclude:
+    - channel_topic
+    - channel_join
+    - pinned_item
+    - bot_message
+    - channel_purpose
+    - channel_archive
+
