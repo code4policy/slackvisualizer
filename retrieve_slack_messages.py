@@ -3,15 +3,14 @@ import json
 import argparse
 import datetime
 import os
+import yaml
 
-section_assignments = {'UF42BG2AZ': 'A', 'UF7J9GDF0': 'A', 'UF1DQSB5X': 'A', 'UF1H5UPQS': 'A',
- 'UF7F8NZBQ': 'A', 'UF4CHR0C8': 'A', 'UF43ER6VC': 'A', 'UF41X1ECV': 'A',
- 'UF2V78H7H': 'A', 'UF209NTPC': 'A', 'UF6E8F22J': 'A', 'UF3CMBX46': 'A',
- 'UF2G6AX08': 'A', 'UF138ES92': 'A', 'UF6FTCAPR': 'A', 'UF19DNZ5E': 'A',
- 'UF6R87N5A': 'B', 'UF454AYP8': 'B', 'UF6EDFNBF': 'B', 'UF4GQD2BC': 'B',
- 'UF4U21CTY': 'B', 'UF16E8535': 'B', 'UF3CE2LBC': 'B', 'UF0Q9EE7K': 'B',
- 'UF1FCTP0A': 'B', 'UF267S3U1': 'B', 'UF1365RQU': 'B', 'UF6B2RSL8': 'B',
- 'UF7DBQNF6': 'B', 'UF8FVA206': 'B', 'UF6UNDAHY': 'B', 'UF7MR1NEA': 'B'}
+with open('slack-config.yaml') as f:
+    config = yaml.safe_load(f)
+
+users_to_exclude = config['users_to_exclude']
+channels_to_exclude = config['channels_to_exclude']
+posts_to_exclude = config['posts_to_exclude']
 
 def slack_query(query_name, url_data = {}):
 	url = 'https://slack.com/api/'
@@ -35,12 +34,11 @@ def get_users(users_to_exclude = []):
 	data = slack_query('users.list')
 	for user in data['members']:
 		if user['id'] not in users_to_exclude:
-			users[user['id']] = {'name': user['real_name'], 'section':section_assignments[user['id']]}
+			users[user['id']] = {'name': user['real_name'], 'section': 'not assigned' }
 	return users
 
-def get_channel_history(channel_id, channel_name, user_list):
+def get_channel_history(channel_id, channel_name, user_list, posts_to_exclude=[]):
 	data = slack_query('conversations.history', url_data={'channel':channel_id, 'count':1000})
-	posts_to_exclude = ['channel_topic', 'channel_join', 'pinned_item', 'bot_message', 'channel_purpose', 'channel_archive', 'channel_name']
 	if 'messages' in data:
 		filtered_data = [message for message in data['messages'] if 'subtype' not in message.keys() or message['subtype'] not in posts_to_exclude]
 		messages = []
@@ -65,11 +63,8 @@ def get_channel_history(channel_id, channel_name, user_list):
 		messages = []
 	return messages
 
-def get_all_messages():
-	channels_to_exclude = ['scratchwork']
+def get_all_messages(channels_to_exclude=[], users_to_exclude=[]):
 	channels = get_channel_list(channels_to_exclude)
-
-	users_to_exclude = ['USLACKBOT', 'UEVMEUTU0', 'UEWCD304A', 'UF7RLN6TS', 'UFA88MRP1']
 	user_list = get_users(users_to_exclude)
 
 	messages = []

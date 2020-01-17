@@ -1,12 +1,16 @@
 # slackvisualizer
+
 A python script to pull slack participation metrics and visualize them with D3.js
 
 ## Pulling Slack Data
+
 1. Be sure to get an [api key from Slack](https://api.slack.com/custom-integrations/legacy-tokens) and add it to your environment variables under the term `SLACKKEY`
 2. Install the required libraries with `pip install -r requirements.txt`
 3. Run the following command to retreive the data from slack (note that you can change the filepath but this will send the data directly to the folder user by the visualization):
 ```
-python retrieve_slack_messages.py -f chat_visualizer/data/slack_chat_history.json
+# note that .json is appended to the file name automatically
+export SLACKKEY="xxx"
+python retrieve_slack_messages.py -f chat_visualizer/data/slack_chat_history
 ```
 
 ## Pulling Trello Data
