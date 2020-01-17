@@ -61,8 +61,6 @@ def get_channel_history(channel_id, channel_name, user_list, posts_to_exclude=[]
 def get_all_messages(channels_to_exclude=[], users_to_exclude=[]):
 	channels = get_channel_list(channels_to_exclude)
 	user_list = get_users(users_to_exclude)
-	print(users_to_exclude)
-	print(user_list)
 
 
 	messages = []
